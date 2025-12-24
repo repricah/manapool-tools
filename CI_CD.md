@@ -46,7 +46,7 @@ go test -v ./pkg/manapool/...
 
 ## After Repository Extraction
 
-When the library is extracted to `github.com/repricah/manapool-tools`, it will need its own dedicated CI/CD pipeline.
+When the library is extracted to `github.com/repricah/manapool`, it will need its own dedicated CI/CD pipeline.
 
 ### Proposed GitHub Actions Workflow
 
@@ -421,7 +421,7 @@ go install golang.org/x/tools/cmd/godoc@latest
 godoc -http=:6060
 
 # Open in browser
-open http://localhost:6060/pkg/github.com/repricah/manapool-tools/
+open http://localhost:6060/pkg/github.com/repricah/manapool/
 ```
 
 ### Example Code

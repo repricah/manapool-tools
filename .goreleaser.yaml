@@ -1,6 +1,6 @@
 version: 2
 
-project_name: manapool-tools
+project_name: manapool
 
 # Disable binary builds since this is a library
 builds:
@@ -9,7 +9,7 @@ builds:
 release:
   github:
     owner: repricah
-    name: manapool-tools
+    name: manapool
   draft: false
   prerelease: auto
 

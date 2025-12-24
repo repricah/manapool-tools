@@ -1,4 +1,4 @@
-module github.com/repricah/manapool-tools
+module github.com/repricah/manapool
 
 go 1.24.7
 

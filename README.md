@@ -4,8 +4,8 @@
 
 A Go client library for the [Manapool API](https://manapool.com). This library provides a Go interface for managing your Magic: The Gathering inventory on Manapool.
 
-[![Go Reference](https://pkg.go.dev/badge/github.com/repricah/manapool-tools.svg)](https://pkg.go.dev/github.com/repricah/manapool-tools)
-[![Go Report Card](https://goreportcard.com/badge/github.com/repricah/manapool-tools)](https://goreportcard.com/report/github.com/repricah/manapool-tools)
+[![Go Reference](https://pkg.go.dev/badge/github.com/repricah/manapool.svg)](https://pkg.go.dev/github.com/repricah/manapool)
+[![Go Report Card](https://goreportcard.com/badge/github.com/repricah/manapool)](https://goreportcard.com/report/github.com/repricah/manapool)
 
 ## Features
 
@@ -35,7 +35,7 @@ Planned features are tracked in GitHub:
 ## Installation
 
 ```bash
-go get github.com/repricah/manapool-tools
+go get github.com/repricah/manapool
 ```
 
 ## Quick Start
@@ -49,7 +49,7 @@ import (
     "log"
     "time"
 
-    "github.com/repricah/manapool-tools"
+    "github.com/repricah/manapool"
 )
 
 func main() {
@@ -395,9 +395,9 @@ MIT License - see LICENSE file for details
 
 ## Support
 
-- 📖 [API Documentation](https://pkg.go.dev/github.com/repricah/manapool-tools)
-- 🐛 [Issue Tracker](https://github.com/repricah/manapool-tools/issues)
-- 💬 [Discussions](https://github.com/repricah/manapool-tools/discussions)
+- 📖 [API Documentation](https://pkg.go.dev/github.com/repricah/manapool)
+- 🐛 [Issue Tracker](https://github.com/repricah/manapool/issues)
+- 💬 [Discussions](https://github.com/repricah/manapool/discussions)
 
 ## Changelog
 
