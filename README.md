@@ -2,7 +2,7 @@
 
 > **⚠️ Pre-Release (v0.1.0)**: This library is under active development. The API may change before v1.0.0. Planned features are tracked in GitHub issues GitHub issues.
 
-A high-quality Go client library for the [Manapool API](https://manapool.com). This library provides a clean, idiomatic Go interface for managing your Magic: The Gathering inventory on Manapool.
+A Go client library for the [Manapool API](https://manapool.com). This library provides a Go interface for managing your Magic: The Gathering inventory on Manapool.
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/repricah/manapool-tools.svg)](https://pkg.go.dev/github.com/repricah/manapool-tools)
 [![Go Report Card](https://goreportcard.com/badge/github.com/repricah/manapool-tools)](https://goreportcard.com/report/github.com/repricah/manapool-tools)
@@ -16,9 +16,9 @@ A high-quality Go client library for the [Manapool API](https://manapool.com). T
 - ✅ **Automatic Rate Limiting** - Built-in rate limiter to respect API limits
 - ✅ **Automatic Retries** - Configurable retry logic with exponential backoff
 - ✅ **Context Support** - First-class context support for cancellation and timeouts
-- ✅ **Comprehensive Error Handling** - Rich error types with helper methods
-- ✅ **Highly Tested** - 96.5% test coverage with extensive integration tests
-- ✅ **Production Ready** - Used in production for TCG inventory management
+- ✅ **Error Handling** - Specific error types with helper methods
+- ✅ **Tested** - 96.5% test coverage with integration tests
+- ✅ **Production Use** - Used in production for TCG inventory management
 - ✅ **Zero Dependencies** - Only depends on `golang.org/x/time/rate`
 
 ### Planned Features
@@ -238,7 +238,7 @@ client := manapool.NewClient(token, email,
 
 ## Error Handling
 
-The library provides rich error types for different scenarios:
+The library provides specific error types for different scenarios:
 
 ### API Errors
 
@@ -382,11 +382,11 @@ go tool cover -html=coverage.out
 Contributions are welcome! Please:
 
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+2. Create a feature branch (`git checkout -b feature/new-feature`)
 3. Write tests for your changes
 4. Ensure tests pass and coverage remains high
-5. Commit your changes (`git commit -m 'Add amazing feature'`)
-6. Push to the branch (`git push origin feature/amazing-feature`)
+5. Commit your changes (`git commit -m 'Add new feature'`)
+6. Push to the branch (`git push origin feature/new-feature`)
 7. Open a Pull Request
 
 ## License
@@ -406,9 +406,9 @@ MIT License - see LICENSE file for details
 - 🎉 Initial pre-release
 - ✅ Seller account endpoint (`GetSellerAccount`)
 - ✅ Seller inventory endpoints (`GetSellerInventory`, `GetInventoryByTCGPlayerID`, `IterateInventory`)
-- ✅ Comprehensive test coverage (96.5%)
-- ✅ Production-ready with rate limiting and retries
+- ✅ Test coverage (96.5%)
+- ✅ Rate limiting and retries
 - ✅ Context support for all operations
-- ✅ Rich error handling with helper methods
+- ✅ Structured error handling with helper methods
 - ✅ Configurable client options
 - ⚠️ API may change before v1.0.0
