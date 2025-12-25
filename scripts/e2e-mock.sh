@@ -2,11 +2,11 @@
 set -euo pipefail
 
 base_url=${1:-http://127.0.0.1:4010}
-results_file="e2e-results.json"
 summary_file="e2e-summary.md"
+failed_tests=0
+total_tests=0
 
-# Initialize results
-echo '{"tests": [], "summary": {"total": 0, "passed": 0, "failed": 0}}' > "$results_file"
+# Initialize summary
 echo "# E2E Mock Test Results" > "$summary_file"
 echo "" >> "$summary_file"
 
@@ -39,11 +39,7 @@ request() {
   echo "    status: $status_code"
   echo "    body: $body"
   
-  # Record result
-  local result_entry="{\"name\": \"$test_name\", \"method\": \"$method\", \"url\": \"$url\", \"status\": $status_code, \"success\": $success}"
-  
-  # Update results file
-  jq --argjson entry "$result_entry" '.tests += [$entry] | .summary.total += 1 | if $entry.success then .summary.passed += 1 else .summary.failed += 1 end' "$results_file" > tmp.json && mv tmp.json "$results_file"
+  ((total_tests++))
   
   # Add to summary
   if [[ "$success" == "true" && "$status_code" =~ ^2[0-9][0-9]$ ]]; then
@@ -51,6 +47,7 @@ request() {
   else
     echo "❌ $test_name - Status: $status_code" >> "$summary_file"
     echo "::error title=E2E Test Failed::$test_name returned status $status_code"
+    ((failed_tests++))
   fi
 }
 
@@ -98,19 +95,17 @@ request GET "$base_url/buyer/orders?since=2024-04-01T00:00:00Z&limit=1" "" \
 
 # Generate final summary
 echo "" >> "$summary_file"
-failed_count=$(jq '.summary.failed' "$results_file")
-total_count=$(jq '.summary.total' "$results_file")
-passed_count=$(jq '.summary.passed' "$results_file")
+passed_tests=$((total_tests - failed_tests))
 
 echo "## Summary" >> "$summary_file"
-echo "- Total tests: $total_count" >> "$summary_file"
-echo "- Passed: $passed_count" >> "$summary_file"
-echo "- Failed: $failed_count" >> "$summary_file"
+echo "- Total tests: $total_tests" >> "$summary_file"
+echo "- Passed: $passed_tests" >> "$summary_file"
+echo "- Failed: $failed_tests" >> "$summary_file"
 
-echo "::notice title=E2E Results::$passed_count/$total_count tests passed"
+echo "::notice title=E2E Results::$passed_tests/$total_tests tests passed"
 
-if [[ "$failed_count" -gt 0 ]]; then
-  echo "::error title=E2E Tests Failed::$failed_count out of $total_count tests failed"
+if [[ "$failed_tests" -gt 0 ]]; then
+  echo "::error title=E2E Tests Failed::$failed_tests out of $total_tests tests failed"
   exit 1
 fi
 
