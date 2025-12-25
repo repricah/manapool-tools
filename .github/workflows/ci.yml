@@ -20,7 +20,24 @@ jobs:
     - uses: actions/setup-go@v5
       with:
         go-version: stable
-    - run: go test -v ./...
+    - run: go test -v -coverprofile=coverage.out ./...
+    - name: Generate coverage report
+      run: |
+        go tool cover -func=coverage.out | tee coverage.txt
+        {
+          echo "## Coverage Report"
+          echo ""
+          echo '```'
+          cat coverage.txt
+          echo '```'
+        } >> "$GITHUB_STEP_SUMMARY"
+    - name: Upload coverage artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage
+        path: |
+          coverage.out
+          coverage.txt
 
   release:
     needs: test
