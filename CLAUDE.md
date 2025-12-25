@@ -187,6 +187,10 @@ client := manapool.NewClient(
 ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 defer cancel()
 
+opts := manapool.InventoryOptions{
+    Limit:  100,
+    Offset: 0,
+}
 inventory, err := client.GetSellerInventory(ctx, opts)
 if err != nil {
     var apiErr *manapool.APIError
