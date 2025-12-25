@@ -51,9 +51,9 @@ jobs:
         node-version: 20
     - name: Run OpenAPI mock e2e checks
       run: |
-        npx @stoplight/prism-cli@5 mock openapi.json -p 4010 --quiet &
+        npx @stoplight/prism-cli@5 mock openapi.json -p 4010 --verboseLevel silent &
         PRISM_PID=$!
-        trap "kill $PRISM_PID" EXIT
+        trap "kill $PRISM_PID || true" EXIT
         ./scripts/e2e-mock.sh http://127.0.0.1:4010
 
   release:
