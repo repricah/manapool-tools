@@ -336,9 +336,25 @@ func TestClient_decodeResponse_NilTarget(t *testing.T) {
 
 func TestNoopLogger(t *testing.T) {
 	logger := &noopLogger{}
-	// These should not panic
-	logger.Debugf("test %s", "debug")
-	logger.Errorf("test %s", "error")
+	// Just ensure it doesn't panic and test coverage
+	logger.Debugf("test debug message")
+	logger.Debugf("test debug with args: %s %d", "arg", 123)
+	logger.Errorf("test error message")
+	logger.Errorf("test error with args: %s %d", "arg", 456)
+}
+
+func TestClient_WithNoopLogger(t *testing.T) {
+	// Test that the default noop logger is used when no logger is provided
+	client := NewClient("test", "test")
+	
+	// The client should have a noop logger by default
+	if client.logger == nil {
+		t.Fatal("client logger should not be nil")
+	}
+	
+	// Call methods that would use the logger to ensure coverage
+	client.logger.Debugf("test debug")
+	client.logger.Errorf("test error")
 }
 
 func TestWithTimeout(t *testing.T) {
@@ -608,4 +624,62 @@ func TestClient_doRequest_FailedAfterRetries(t *testing.T) {
 		t.Errorf("StatusCode = %d, want 500", resp.StatusCode)
 	}
 	_ = resp.Body.Close()
+}
+func TestClient_doJSONRequest_Errors(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		_, _ = w.Write([]byte(`{"success": true}`))
+	}))
+	defer server.Close()
+
+	client := NewClient("test-token", "test@example.com", WithBaseURL(server.URL+"/"))
+	ctx := context.Background()
+
+	// Test with invalid JSON payload
+	type invalidStruct struct {
+		Ch chan int `json:"ch"` // channels can't be marshaled to JSON
+	}
+	
+	_, err := client.doJSONRequest(ctx, "POST", "/test", nil, invalidStruct{Ch: make(chan int)})
+	if err == nil {
+		t.Fatal("expected JSON marshal error, got nil")
+	}
+}
+
+func TestClient_doRequestWithBody_Errors(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+	}))
+	defer server.Close()
+
+	client := NewClient("test-token", "test@example.com", WithBaseURL(server.URL+"/"))
+	ctx := context.Background()
+
+	// Test with failing reader
+	failingReader := &failingReader{}
+	_, err := client.doRequestWithBody(ctx, "POST", "/test", nil, failingReader, "application/octet-stream")
+	if err == nil {
+		t.Fatal("expected error from failing reader, got nil")
+	}
+}
+
+// failingReader always returns an error when read
+type failingReader struct{}
+
+func (f *failingReader) Read(p []byte) (n int, err error) {
+	return 0, errors.New("read error")
+}
+
+func TestClient_decodeResponse_EmptyBody(t *testing.T) {
+	// Test decoding with empty response body (should not error for nil target)
+	resp := &http.Response{
+		StatusCode: http.StatusNoContent,
+		Body:       io.NopCloser(strings.NewReader("")),
+	}
+
+	client := NewClient("test", "test")
+	err := client.decodeResponse(resp, nil)
+	if err != nil {
+		t.Fatalf("decodeResponse with empty body and nil target should not error, got: %v", err)
+	}
 }
