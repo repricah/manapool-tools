@@ -150,35 +150,49 @@ This is a Go client library for the Manapool API, which manages Magic: The Gathe
 - Validate all inputs before making API calls
 - Follow secure coding practices for HTTP clients
 
-## Beads Framework Integration
+## Beads Integration
 
-This repository can be used as a reference for building Go libraries that integrate with the Beads programming framework:
-
-### About Beads
-
-Beads is a modern programming language and framework designed to simplify web development by replacing traditional JS/HTML/CSS stacks. Key features relevant to this project:
-
-- **Specification-driven language**: Beads uses a declarative approach
-- **Built-in sync engine**: Automatic UI updates and state management
-- **Protected arithmetic**: Built-in safety for numerical operations
-- **Proportional layouts**: Simplified responsive design
-- **AI agent support**: Session memory, multimodal prompting, and autonomous task management
-
-### Beads Integration Guidelines
+See **README.md → Beads Integration** for the public-facing guidance.
 
 When integrating this library with Beads applications:
 
-1. **HTTP Client Patterns**: Beads supports HTTP operations natively - use this library's client patterns as reference for proper error handling and retries
-2. **Type Safety**: Follow this library's approach to type-safe API interactions
-3. **Rate Limiting**: Beads apps should respect API rate limits - use similar rate limiting patterns
-4. **Context Propagation**: Maintain context throughout request chains for proper cancellation
-5. **Error Handling**: Use structured error types that Beads UI can present meaningfully
+1. **Environment configuration**: Load credentials from environment variables.
+2. **Context propagation**: Use timeouts/cancellation for request lifecycles.
+3. **Rate limiting**: Respect API limits with `WithRateLimit`.
+4. **Structured errors**: Surface `APIError`/`NetworkError` in the UI or logs.
+
+```go
+client := manapool.NewClient(
+    os.Getenv("MANAPOOL_TOKEN"),
+    os.Getenv("MANAPOOL_EMAIL"),
+    manapool.WithTimeout(30*time.Second),
+    manapool.WithRateLimit(10, 1),
+)
+
+ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+defer cancel()
+
+opts := manapool.InventoryOptions{
+    Limit:  100,
+    Offset: 0,
+}
+inventory, err := client.GetSellerInventory(ctx, opts)
+if err != nil {
+    var apiErr *manapool.APIError
+    if errors.As(err, &apiErr) {
+        // Display a user-friendly message in Beads UI.
+        return
+    }
+    // Handle network/unknown errors.
+    return
+}
+```
 
 ### Beads Resources
 
-- Official Site: http://www.beadsproject.net/
+- Official Site: https://www.beadsproject.net/
+- Documentation: https://www.beadsproject.net/ref/
 - Examples: https://github.com/magicmouse/beads-examples
-- Quick Reference: http://www.beadsproject.net/ref/
 
 ## API Usage Patterns
 

@@ -165,58 +165,48 @@ func TestClient_DoOperation(t *testing.T) {
 - ❌ Skip error wrapping
 - ❌ Reduce test coverage
 
-## Beads Framework Integration
+## Beads Integration
 
-When this library is used with Beads applications:
+See **README.md → Beads Integration** for the public-facing guidance.
 
-### Key Integration Points
+When integrating this library with Beads applications:
 
-1. **HTTP Client Patterns**: Demonstrate proper error handling and retries
-2. **Type Safety**: Show strongly-typed API interactions
-3. **Rate Limiting**: Configure appropriate rate limits for API usage
-4. **Context Propagation**: Use context for cancellation and timeouts
-
-### Beads-Specific Guidance
+1. **Environment configuration**: Load credentials from environment variables.
+2. **Context propagation**: Use timeouts/cancellation for request lifecycles.
+3. **Rate limiting**: Respect API limits with `WithRateLimit`.
+4. **Structured errors**: Surface `APIError`/`NetworkError` in the UI or logs.
 
 ```go
-// Initialize client with environment config
 client := manapool.NewClient(
     os.Getenv("MANAPOOL_TOKEN"),
     os.Getenv("MANAPOOL_EMAIL"),
     manapool.WithTimeout(30*time.Second),
-    manapool.WithRateLimit(10, 1), // 10 req/sec
+    manapool.WithRateLimit(10, 1),
 )
 
-// Use context for Beads UI operations
 ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 defer cancel()
 
-// Handle errors for Beads UI
+opts := manapool.InventoryOptions{
+    Limit:  100,
+    Offset: 0,
+}
 inventory, err := client.GetSellerInventory(ctx, opts)
 if err != nil {
     var apiErr *manapool.APIError
     if errors.As(err, &apiErr) {
-        // Display user-friendly error in Beads UI
-        if apiErr.IsRateLimited() {
-            showError("Too many requests. Please wait.")
-        } else {
-            showError(fmt.Sprintf("API error: %s", apiErr.Message))
-        }
+        // Display a user-friendly message in Beads UI.
         return
     }
-    // Handle other errors
-    showError("Connection error. Please try again.")
+    // Handle network/unknown errors.
     return
 }
-
-// Update Beads UI with data
-updateInventoryDisplay(inventory)
 ```
 
 ### Beads Resources
-- Official Site: http://www.beadsproject.net/
+- Official Site: https://www.beadsproject.net/
+- Documentation: https://www.beadsproject.net/ref/
 - Examples: https://github.com/magicmouse/beads-examples
-- Documentation: http://www.beadsproject.net/ref/
 
 ## Git Workflow
 
