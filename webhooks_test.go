@@ -3,6 +3,7 @@ package manapool
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -65,6 +66,28 @@ func TestClient_WebhooksEndpoints(t *testing.T) {
 	t.Run("DeleteWebhook", func(t *testing.T) {
 		if err := client.DeleteWebhook(ctx, "wh"); err != nil {
 			t.Fatalf("DeleteWebhook error: %v", err)
+		}
+	})
+
+	t.Run("GetWebhook_EmptyID", func(t *testing.T) {
+		_, err := client.GetWebhook(ctx, "")
+		if err == nil {
+			t.Fatal("expected validation error for empty ID, got nil")
+		}
+		var valErr *ValidationError
+		if !errors.As(err, &valErr) {
+			t.Fatalf("expected ValidationError, got %T", err)
+		}
+	})
+
+	t.Run("DeleteWebhook_EmptyID", func(t *testing.T) {
+		err := client.DeleteWebhook(ctx, "")
+		if err == nil {
+			t.Fatal("expected validation error for empty ID, got nil")
+		}
+		var valErr *ValidationError
+		if !errors.As(err, &valErr) {
+			t.Fatalf("expected ValidationError, got %T", err)
 		}
 	})
 }

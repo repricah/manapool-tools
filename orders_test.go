@@ -3,6 +3,7 @@ package manapool
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -115,6 +116,62 @@ func TestClient_OrderEndpoints(t *testing.T) {
 		}
 		if len(reports.Reports) != 1 {
 			t.Fatalf("reports count = %d, want 1", len(reports.Reports))
+		}
+	})
+
+	// Test validation errors
+	t.Run("GetOrder_EmptyID", func(t *testing.T) {
+		_, err := client.GetOrder(ctx, "")
+		if err == nil {
+			t.Fatal("expected validation error for empty ID, got nil")
+		}
+		var valErr *ValidationError
+		if !errors.As(err, &valErr) {
+			t.Fatalf("expected ValidationError, got %T", err)
+		}
+	})
+
+	t.Run("UpdateOrderFulfillment_EmptyID", func(t *testing.T) {
+		_, err := client.UpdateOrderFulfillment(ctx, "", OrderFulfillmentRequest{})
+		if err == nil {
+			t.Fatal("expected validation error for empty ID, got nil")
+		}
+		var valErr *ValidationError
+		if !errors.As(err, &valErr) {
+			t.Fatalf("expected ValidationError, got %T", err)
+		}
+	})
+
+	t.Run("GetSellerOrder_EmptyID", func(t *testing.T) {
+		_, err := client.GetSellerOrder(ctx, "")
+		if err == nil {
+			t.Fatal("expected validation error for empty ID, got nil")
+		}
+		var valErr *ValidationError
+		if !errors.As(err, &valErr) {
+			t.Fatalf("expected ValidationError, got %T", err)
+		}
+	})
+
+	t.Run("UpdateSellerOrderFulfillment_EmptyID", func(t *testing.T) {
+		_, err := client.UpdateSellerOrderFulfillment(ctx, "", OrderFulfillmentRequest{})
+		if err == nil {
+			t.Fatal("expected validation error for empty ID, got nil")
+		}
+		var valErr *ValidationError
+		if !errors.As(err, &valErr) {
+			t.Fatalf("expected ValidationError, got %T", err)
+		}
+	})
+
+	t.Run("GetSellerOrderReports_EmptyID", func(t *testing.T) {
+		_, err := client.GetSellerOrderReports(ctx, "")
+		if err == nil {
+			t.Fatal("expected validation error for empty ID, got nil")
+		}
+		var valErr *ValidationError
+		if !errors.As(err, &valErr) {
+			t.Fatalf("expected ValidationError, got %T", err)
 		}
 	})
 }

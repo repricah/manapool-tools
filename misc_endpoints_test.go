@@ -2,6 +2,7 @@ package manapool
 
 import (
 	"context"
+	"errors"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -69,6 +70,49 @@ func TestClient_MiscEndpoints(t *testing.T) {
 		}
 		if !job.Success {
 			t.Fatalf("job application success = false, want true")
+		}
+	})
+
+	t.Run("SubmitJobApplication_WithOptionalFields", func(t *testing.T) {
+		application := []byte("fake zip")
+		job, err := client.SubmitJobApplication(ctx, JobApplicationRequest{
+			FirstName:    "John",
+			LastName:     "Doe", 
+			Email:        "john@example.com",
+			LinkedInURL:  "https://linkedin.com/in/johndoe",
+			GitHubURL:    "https://github.com/johndoe",
+			Application:  application,
+		})
+		if err != nil {
+			t.Fatalf("SubmitJobApplication error: %v", err)
+		}
+		if !job.Success {
+			t.Fatalf("job application success = false, want true")
+		}
+	})
+
+	t.Run("SubmitJobApplication_ValidationErrors", func(t *testing.T) {
+		testCases := []struct {
+			name string
+			req  JobApplicationRequest
+		}{
+			{"missing first name", JobApplicationRequest{LastName: "Doe", Email: "john@example.com", Application: []byte("zip")}},
+			{"missing last name", JobApplicationRequest{FirstName: "John", Email: "john@example.com", Application: []byte("zip")}},
+			{"missing email", JobApplicationRequest{FirstName: "John", LastName: "Doe", Application: []byte("zip")}},
+			{"missing application", JobApplicationRequest{FirstName: "John", LastName: "Doe", Email: "john@example.com"}},
+		}
+
+		for _, tc := range testCases {
+			t.Run(tc.name, func(t *testing.T) {
+				_, err := client.SubmitJobApplication(ctx, tc.req)
+				if err == nil {
+					t.Fatal("expected validation error, got nil")
+				}
+				var valErr *ValidationError
+				if !errors.As(err, &valErr) {
+					t.Fatalf("expected ValidationError, got %T", err)
+				}
+			})
 		}
 	})
 }

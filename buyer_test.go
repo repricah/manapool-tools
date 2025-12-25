@@ -3,6 +3,7 @@ package manapool
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -130,6 +131,51 @@ func TestClient_BuyerEndpoints(t *testing.T) {
 		}
 		if credit.UserCreditCents != 500 {
 			t.Fatalf("credit = %d, want 500", credit.UserCreditCents)
+		}
+	})
+
+	// Test validation errors
+	t.Run("GetBuyerOrder_EmptyID", func(t *testing.T) {
+		_, err := client.GetBuyerOrder(ctx, "")
+		if err == nil {
+			t.Fatal("expected validation error for empty ID, got nil")
+		}
+		var valErr *ValidationError
+		if !errors.As(err, &valErr) {
+			t.Fatalf("expected ValidationError, got %T", err)
+		}
+	})
+
+	t.Run("GetPendingOrder_EmptyID", func(t *testing.T) {
+		_, err := client.GetPendingOrder(ctx, "")
+		if err == nil {
+			t.Fatal("expected validation error for empty ID, got nil")
+		}
+		var valErr *ValidationError
+		if !errors.As(err, &valErr) {
+			t.Fatalf("expected ValidationError, got %T", err)
+		}
+	})
+
+	t.Run("UpdatePendingOrder_EmptyID", func(t *testing.T) {
+		_, err := client.UpdatePendingOrder(ctx, "", PendingOrderRequest{})
+		if err == nil {
+			t.Fatal("expected validation error for empty ID, got nil")
+		}
+		var valErr *ValidationError
+		if !errors.As(err, &valErr) {
+			t.Fatalf("expected ValidationError, got %T", err)
+		}
+	})
+
+	t.Run("PurchasePendingOrder_EmptyID", func(t *testing.T) {
+		_, err := client.PurchasePendingOrder(ctx, "", PurchasePendingOrderRequest{})
+		if err == nil {
+			t.Fatal("expected validation error for empty ID, got nil")
+		}
+		var valErr *ValidationError
+		if !errors.As(err, &valErr) {
+			t.Fatalf("expected ValidationError, got %T", err)
 		}
 	})
 }

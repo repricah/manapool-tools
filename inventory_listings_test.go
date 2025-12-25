@@ -3,6 +3,7 @@ package manapool
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -254,4 +255,104 @@ func TestClient_InventoryListingEndpoints(t *testing.T) {
 	if !strings.Contains(inventoryJSON, "Black Lotus") {
 		t.Fatalf("expected inventory json to include card name")
 	}
+
+	// Test validation errors
+	t.Run("GetInventoryListing_EmptyID", func(t *testing.T) {
+		_, err := client.GetInventoryListing(ctx, "")
+		if err == nil {
+			t.Fatal("expected validation error for empty ID, got nil")
+		}
+		var valErr *ValidationError
+		if !errors.As(err, &valErr) {
+			t.Fatalf("expected ValidationError, got %T", err)
+		}
+	})
+
+	t.Run("GetInventoryBySKU_InvalidSKU", func(t *testing.T) {
+		_, err := client.GetInventoryBySKU(ctx, 0)
+		if err == nil {
+			t.Fatal("expected validation error for invalid SKU, got nil")
+		}
+		var valErr *ValidationError
+		if !errors.As(err, &valErr) {
+			t.Fatalf("expected ValidationError, got %T", err)
+		}
+	})
+
+	t.Run("UpdateInventoryBySKU_InvalidSKU", func(t *testing.T) {
+		_, err := client.UpdateInventoryBySKU(ctx, -1, InventoryUpdateRequest{PriceCents: 100, Quantity: 1})
+		if err == nil {
+			t.Fatal("expected validation error for invalid SKU, got nil")
+		}
+		var valErr *ValidationError
+		if !errors.As(err, &valErr) {
+			t.Fatalf("expected ValidationError, got %T", err)
+		}
+	})
+
+	t.Run("DeleteInventoryBySKU_InvalidSKU", func(t *testing.T) {
+		_, err := client.DeleteInventoryBySKU(ctx, 0)
+		if err == nil {
+			t.Fatal("expected validation error for invalid SKU, got nil")
+		}
+		var valErr *ValidationError
+		if !errors.As(err, &valErr) {
+			t.Fatalf("expected ValidationError, got %T", err)
+		}
+	})
+
+	t.Run("CreateInventoryBulk_EmptyItems", func(t *testing.T) {
+		_, err := client.CreateInventoryBulk(ctx, []InventoryBulkItemBySKU{})
+		if err == nil {
+			t.Fatal("expected validation error for empty items, got nil")
+		}
+		var valErr *ValidationError
+		if !errors.As(err, &valErr) {
+			t.Fatalf("expected ValidationError, got %T", err)
+		}
+	})
+
+	t.Run("CreateInventoryBulkBySKU_EmptyItems", func(t *testing.T) {
+		_, err := client.CreateInventoryBulkBySKU(ctx, []InventoryBulkItemBySKU{})
+		if err == nil {
+			t.Fatal("expected validation error for empty items, got nil")
+		}
+		var valErr *ValidationError
+		if !errors.As(err, &valErr) {
+			t.Fatalf("expected ValidationError, got %T", err)
+		}
+	})
+
+	t.Run("CreateInventoryBulkByProduct_EmptyItems", func(t *testing.T) {
+		_, err := client.CreateInventoryBulkByProduct(ctx, []InventoryBulkItemByProduct{})
+		if err == nil {
+			t.Fatal("expected validation error for empty items, got nil")
+		}
+		var valErr *ValidationError
+		if !errors.As(err, &valErr) {
+			t.Fatalf("expected ValidationError, got %T", err)
+		}
+	})
+
+	t.Run("CreateInventoryBulkByScryfall_EmptyItems", func(t *testing.T) {
+		_, err := client.CreateInventoryBulkByScryfall(ctx, []InventoryBulkItemByScryfall{})
+		if err == nil {
+			t.Fatal("expected validation error for empty items, got nil")
+		}
+		var valErr *ValidationError
+		if !errors.As(err, &valErr) {
+			t.Fatalf("expected ValidationError, got %T", err)
+		}
+	})
+
+	t.Run("CreateInventoryBulkByTCGPlayerID_EmptyItems", func(t *testing.T) {
+		_, err := client.CreateInventoryBulkByTCGPlayerID(ctx, []InventoryBulkItemByTCGPlayerID{})
+		if err == nil {
+			t.Fatal("expected validation error for empty items, got nil")
+		}
+		var valErr *ValidationError
+		if !errors.As(err, &valErr) {
+			t.Fatalf("expected ValidationError, got %T", err)
+		}
+	})
 }
