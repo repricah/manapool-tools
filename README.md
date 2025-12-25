@@ -93,6 +93,38 @@ func main() {
 }
 ```
 
+## Beads Integration
+
+If you're using this client in Beads applications, follow the same patterns you would in Go services: configure credentials via environment variables, propagate context for cancellation, respect rate limits, and surface structured errors to the UI or logs.
+
+```go
+client := manapool.NewClient(
+    os.Getenv("MANAPOOL_TOKEN"),
+    os.Getenv("MANAPOOL_EMAIL"),
+    manapool.WithTimeout(30*time.Second),
+    manapool.WithRateLimit(10, 1),
+)
+
+ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+defer cancel()
+
+inventory, err := client.GetSellerInventory(ctx, opts)
+if err != nil {
+    var apiErr *manapool.APIError
+    if errors.As(err, &apiErr) {
+        // Display a user-friendly message in Beads UI.
+        return
+    }
+    // Handle network/unknown errors.
+    return
+}
+```
+
+Beads resources:
+- Official Site: https://www.beadsproject.net/
+- Documentation: https://www.beadsproject.net/ref/
+- Examples: https://github.com/magicmouse/beads-examples
+
 ## Usage Examples
 
 ### Authentication
