@@ -57,6 +57,21 @@ jobs:
         PRISM_PID=$!
         trap "kill $PRISM_PID || true" EXIT
         ./scripts/e2e-mock.sh http://127.0.0.1:4010
+    - name: Upload e2e test results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: e2e-results
+        path: |
+          e2e-results.json
+          e2e-summary.md
+          prism.log
+    - name: Add e2e summary to job summary
+      if: always()
+      run: |
+        if [[ -f e2e-summary.md ]]; then
+          cat e2e-summary.md >> "$GITHUB_STEP_SUMMARY"
+        fi
 
   release:
     needs: test
