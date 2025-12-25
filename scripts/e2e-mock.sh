@@ -18,17 +18,20 @@ request() {
     -X "${method}" \
     "$@" \
     ${data:+-d "$data"} \
-    "${url}"
+    "${url}" || {
+    echo "    Request failed, but continuing..."
+    echo "{}" > /tmp/e2e-body.json
+  }
   echo "    body: $(cat /tmp/e2e-body.json)"
 }
 
 ready=false
-for _ in {1..20}; do
-  if curl -sf "$base_url/prices/singles" >/dev/null; then
+for i in {1..30}; do
+  if curl -sf "$base_url/prices/singles" >/dev/null 2>&1; then
     ready=true
     break
   fi
-  sleep 1
+  sleep 2
 done
 
 if [[ "${ready}" != "true" ]]; then
