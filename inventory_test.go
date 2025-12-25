@@ -97,8 +97,12 @@ func TestClient_GetSellerInventory_Success(t *testing.T) {
 	if item.Quantity != 5 {
 		t.Errorf("Quantity = %d, want 5", item.Quantity)
 	}
-	if item.Product.Single.Name != "Black Lotus" {
-		t.Errorf("Product.Single.Name = %q, want %q", item.Product.Single.Name, "Black Lotus")
+	if item.Product.Single == nil || item.Product.Single.Name != "Black Lotus" {
+		name := "<nil>"
+		if item.Product.Single != nil {
+			name = item.Product.Single.Name
+		}
+		t.Errorf("Product.Single.Name = %q, want %q", name, "Black Lotus")
 	}
 
 	// Verify pagination
@@ -262,11 +266,19 @@ func TestClient_GetInventoryByTCGPlayerID_Success(t *testing.T) {
 	if item.Quantity != 3 {
 		t.Errorf("Quantity = %d, want 3", item.Quantity)
 	}
-	if item.Product.TCGPlayerSKU != 4549403 {
-		t.Errorf("Product.TCGPlayerSKU = %d, want 4549403", item.Product.TCGPlayerSKU)
+	if item.Product.TCGPlayerSKU == nil || *item.Product.TCGPlayerSKU != 4549403 {
+		value := 0
+		if item.Product.TCGPlayerSKU != nil {
+			value = *item.Product.TCGPlayerSKU
+		}
+		t.Errorf("Product.TCGPlayerSKU = %d, want 4549403", value)
 	}
-	if item.Product.Single.Name != "Lightning Bolt" {
-		t.Errorf("Product.Single.Name = %q, want %q", item.Product.Single.Name, "Lightning Bolt")
+	if item.Product.Single == nil || item.Product.Single.Name != "Lightning Bolt" {
+		name := "<nil>"
+		if item.Product.Single != nil {
+			name = item.Product.Single.Name
+		}
+		t.Errorf("Product.Single.Name = %q, want %q", name, "Lightning Bolt")
 	}
 }
 

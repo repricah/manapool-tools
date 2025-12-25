@@ -109,8 +109,17 @@ func (c *Client) GetInventoryByTCGPlayerID(ctx context.Context, tcgplayerID stri
 		return nil, fmt.Errorf("failed to decode inventory item: %w", err)
 	}
 
-	c.logger.Debugf("Retrieved inventory item: %s (TCG SKU: %d)",
-		item.Product.Single.Name, item.Product.TCGPlayerSKU)
+	itemName := "unknown"
+	if item.Product.Single != nil {
+		itemName = item.Product.Single.Name
+	}
+
+	tcgSKU := 0
+	if item.Product.TCGPlayerSKU != nil {
+		tcgSKU = *item.Product.TCGPlayerSKU
+	}
+
+	c.logger.Debugf("Retrieved inventory item: %s (TCG SKU: %d)", itemName, tcgSKU)
 
 	return &item, nil
 }

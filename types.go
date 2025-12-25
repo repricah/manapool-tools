@@ -76,17 +76,18 @@ type InventoryItem struct {
 
 // Product represents a product in the Manapool inventory.
 type Product struct {
-	Type         string `json:"type"`
-	ID           string `json:"id"`
-	TCGPlayerSKU int    `json:"tcgplayer_sku"`
-	Single       Single `json:"single"`
-	Sealed       Sealed `json:"sealed"`
+	Type         string  `json:"type"`
+	ID           string  `json:"id"`
+	TCGPlayerSKU *int    `json:"tcgplayer_sku"`
+	Single       *Single `json:"single"`
+	Sealed       *Sealed `json:"sealed"`
 }
 
 // Single represents a single card product.
 type Single struct {
 	ScryfallID  string `json:"scryfall_id"`
 	MTGJsonID   string `json:"mtgjson_id"`
+	TCGPlayerID *int   `json:"tcgplayer_id"`
 	Name        string `json:"name"`
 	Set         string `json:"set"`
 	Number      string `json:"number"`
@@ -97,10 +98,11 @@ type Single struct {
 
 // Sealed represents a sealed product (booster boxes, etc.).
 type Sealed struct {
-	MTGJsonID  string `json:"mtgjson_id"`
-	Name       string `json:"name"`
-	Set        string `json:"set"`
-	LanguageID string `json:"language_id"`
+	MTGJsonID   string `json:"mtgjson_id"`
+	TCGPlayerID *int   `json:"tcgplayer_id"`
+	Name        string `json:"name"`
+	Set         string `json:"set"`
+	LanguageID  string `json:"language_id"`
 }
 
 // Pagination contains pagination metadata for API responses.

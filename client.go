@@ -1,6 +1,7 @@
 package manapool
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -131,6 +132,10 @@ func NewClient(authToken, email string, opts ...ClientOption) *Client {
 
 // doRequest executes an HTTP request with rate limiting, retries, and error handling.
 func (c *Client) doRequest(ctx context.Context, method, endpoint string, params url.Values) (*http.Response, error) {
+	return c.doRequestWithBody(ctx, method, endpoint, params, nil, "")
+}
+
+func (c *Client) doRequestWithBody(ctx context.Context, method, endpoint string, params url.Values, body io.Reader, contentType string) (*http.Response, error) {
 	// Wait for rate limiter
 	if err := c.rateLimiter.Wait(ctx); err != nil {
 		return nil, NewNetworkError("rate limiter error", err)
@@ -143,7 +148,7 @@ func (c *Client) doRequest(ctx context.Context, method, endpoint string, params 
 	}
 
 	// Create request
-	req, err := http.NewRequestWithContext(ctx, method, reqURL, nil)
+	req, err := http.NewRequestWithContext(ctx, method, reqURL, body)
 	if err != nil {
 		return nil, NewNetworkError("failed to create request", err)
 	}
@@ -153,6 +158,9 @@ func (c *Client) doRequest(ctx context.Context, method, endpoint string, params 
 	req.Header.Set("X-ManaPool-Email", c.email)
 	req.Header.Set("User-Agent", c.userAgent)
 	req.Header.Set("Accept", "application/json")
+	if contentType != "" {
+		req.Header.Set("Content-Type", contentType)
+	}
 
 	// Execute with retries
 	var resp *http.Response
@@ -195,6 +203,20 @@ func (c *Client) doRequest(ctx context.Context, method, endpoint string, params 
 	return resp, nil
 }
 
+func (c *Client) doJSONRequest(ctx context.Context, method, endpoint string, params url.Values, payload interface{}) (*http.Response, error) {
+	var body io.Reader
+	if payload != nil {
+		buf := &bytes.Buffer{}
+		encoder := json.NewEncoder(buf)
+		if err := encoder.Encode(payload); err != nil {
+			return nil, NewNetworkError("failed to encode request body", err)
+		}
+		body = buf
+	}
+
+	return c.doRequestWithBody(ctx, method, endpoint, params, body, "application/json")
+}
+
 // decodeResponse decodes a JSON response and handles HTTP errors.
 func (c *Client) decodeResponse(resp *http.Response, v interface{}) error {
 	defer func() {
@@ -210,7 +232,7 @@ func (c *Client) decodeResponse(resp *http.Response, v interface{}) error {
 	c.logger.Debugf("API response: status=%d, body=%s", resp.StatusCode, string(body))
 
 	// Check status code
-	if resp.StatusCode != http.StatusOK {
+	if resp.StatusCode < http.StatusOK || resp.StatusCode >= http.StatusMultipleChoices {
 		apiErr := &APIError{
 			StatusCode: resp.StatusCode,
 			Message:    string(body),
@@ -234,7 +256,7 @@ func (c *Client) decodeResponse(resp *http.Response, v interface{}) error {
 	}
 
 	// Decode JSON
-	if v != nil {
+	if v != nil && len(body) > 0 {
 		if err := json.Unmarshal(body, v); err != nil {
 			return fmt.Errorf("failed to decode response: %w", err)
 		}

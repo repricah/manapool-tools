@@ -40,3 +40,22 @@ func (c *Client) GetSellerAccount(ctx context.Context) (*Account, error) {
 
 	return &account, nil
 }
+
+// UpdateSellerAccount updates the seller account settings.
+func (c *Client) UpdateSellerAccount(ctx context.Context, update SellerAccountUpdate) (*Account, error) {
+	c.logger.Debugf("Updating seller account")
+
+	resp, err := c.doJSONRequest(ctx, "PUT", "/account", nil, update)
+	if err != nil {
+		return nil, fmt.Errorf("failed to update seller account: %w", err)
+	}
+
+	var account Account
+	if err := c.decodeResponse(resp, &account); err != nil {
+		return nil, fmt.Errorf("failed to decode updated seller account: %w", err)
+	}
+
+	c.logger.Debugf("Updated seller account: %s (%s)", account.Username, account.Email)
+
+	return &account, nil
+}
