@@ -33,6 +33,10 @@ done
 
 if [[ "${ready}" != "true" ]]; then
   echo "Prism mock did not become ready at ${base_url}"
+  if [[ -n "${PRISM_LOG:-}" && -f "${PRISM_LOG}" ]]; then
+    echo "Prism log output:"
+    cat "${PRISM_LOG}"
+  fi
   exit 1
 fi
 
