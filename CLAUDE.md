@@ -165,11 +165,9 @@ func TestClient_DoOperation(t *testing.T) {
 - ❌ Skip error wrapping
 - ❌ Reduce test coverage
 
-## Beads Integration
+## Integration Guidelines
 
-See **README.md → Beads Integration** for the public-facing guidance.
-
-When integrating this library with Beads applications:
+When integrating this library with applications:
 
 1. **Environment configuration**: Load credentials from environment variables.
 2. **Context propagation**: Use timeouts/cancellation for request lifecycles.

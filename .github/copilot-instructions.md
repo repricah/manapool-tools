@@ -150,11 +150,9 @@ This is a Go client library for the Manapool API, which manages Magic: The Gathe
 - Validate all inputs before making API calls
 - Follow secure coding practices for HTTP clients
 
-## Beads Integration
+## Integration Guidelines
 
-See **README.md → Beads Integration** for the public-facing guidance.
-
-When integrating this library with Beads applications:
+When integrating this library with applications:
 
 1. **Environment configuration**: Load credentials from environment variables.
 2. **Context propagation**: Use timeouts/cancellation for request lifecycles.
