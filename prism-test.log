@@ -1,0 +1,67 @@
+npm warn exec The following package was not found and will be installed: @stoplight/prism-cli@5.14.2
+npm warn deprecated json-schema-ref-parser@6.1.0: Please switch to @apidevtools/json-schema-ref-parser
+npm warn deprecated @faker-js/faker@5.5.3: Please update to a newer version.
+[1:51:47 PM] › [CLI] …  awaiting  Starting Prism…
+[1:51:47 PM] › [CLI] ℹ  info      GET        http://127.0.0.1:4010/prices/singles
+[1:51:47 PM] › [CLI] ℹ  info      GET        http://127.0.0.1:4010/prices/variants
+[1:51:47 PM] › [CLI] ℹ  info      GET        http://127.0.0.1:4010/prices/sealed
+[1:51:47 PM] › [CLI] ℹ  info      POST       http://127.0.0.1:4010/buyer/optimizer
+[1:51:47 PM] › [CLI] ℹ  info      GET        http://127.0.0.1:4010/buyer/orders?since=1898-05-10T01%3A52%3A14.0Z&limit=212&offset=688
+[1:51:47 PM] › [CLI] ℹ  info      GET        http://127.0.0.1:4010/buyer/orders/7d60922b-20f6-e193-84f9-d4eccb00e84f
+[1:51:47 PM] › [CLI] ℹ  info      POST       http://127.0.0.1:4010/buyer/orders/pending-orders
+[1:51:47 PM] › [CLI] ℹ  info      GET        http://127.0.0.1:4010/buyer/orders/pending-orders/5b7c4212-2979-ca5d-858a-b3ec4aa19184
+[1:51:47 PM] › [CLI] ℹ  info      PUT        http://127.0.0.1:4010/buyer/orders/pending-orders/b3d8ab70-a25a-0509-2856-a75bfaf7d6c6
+[1:51:47 PM] › [CLI] ℹ  info      POST       http://127.0.0.1:4010/buyer/orders/pending-orders/3becf5d2-4a31-fef0-339a-0bf71e104f5f/purchase
+[1:51:47 PM] › [CLI] ℹ  info      GET        http://127.0.0.1:4010/buyer/credit
+[1:51:47 PM] › [CLI] ℹ  info      GET        http://127.0.0.1:4010/account
+[1:51:47 PM] › [CLI] ℹ  info      PUT        http://127.0.0.1:4010/account
+[1:51:47 PM] › [CLI] ℹ  info      POST       http://127.0.0.1:4010/card_info
+[1:51:47 PM] › [CLI] ℹ  info      POST       http://127.0.0.1:4010/deck
+[1:51:47 PM] › [CLI] ℹ  info      GET        http://127.0.0.1:4010/inventory/listings
+[1:51:47 PM] › [CLI] ℹ  info      GET        http://127.0.0.1:4010/inventory/listings/a8303358-4d52-acd7-e317-bb068b6f2f93
+[1:51:47 PM] › [CLI] ℹ  info      GET        http://127.0.0.1:4010/inventory/tcgsku/eveniet
+[1:51:47 PM] › [CLI] ℹ  info      DELETE     http://127.0.0.1:4010/inventory/tcgsku/aliquam
+[1:51:47 PM] › [CLI] ℹ  info      PUT        http://127.0.0.1:4010/inventory/tcgsku/nulla
+[1:51:47 PM] › [CLI] ℹ  info      POST       http://127.0.0.1:4010/job-apply
+[1:51:47 PM] › [CLI] ℹ  info      GET        http://127.0.0.1:4010/seller/inventory?limit=4779&offset=104
+[1:51:47 PM] › [CLI] ℹ  info      POST       http://127.0.0.1:4010/seller/inventory
+[1:51:47 PM] › [CLI] ℹ  info      POST       http://127.0.0.1:4010/seller/inventory/tcgsku
+[1:51:47 PM] › [CLI] ℹ  info      GET        http://127.0.0.1:4010/seller/inventory/tcgsku/officiis
+[1:51:47 PM] › [CLI] ℹ  info      DELETE     http://127.0.0.1:4010/seller/inventory/tcgsku/voluptas
+[1:51:47 PM] › [CLI] ℹ  info      PUT        http://127.0.0.1:4010/seller/inventory/tcgsku/qui
+[1:51:47 PM] › [CLI] ℹ  info      POST       http://127.0.0.1:4010/seller/inventory/product
+[1:51:47 PM] › [CLI] ℹ  info      GET        http://127.0.0.1:4010/seller/inventory/product/mtg_single/408c81a6-9b13-ed0e-268c-98aaf5755c8b
+[1:51:47 PM] › [CLI] ℹ  info      DELETE     http://127.0.0.1:4010/seller/inventory/product/mtg_sealed/797306de-4460-9d14-b123-62b539047011
+[1:51:47 PM] › [CLI] ℹ  info      PUT        http://127.0.0.1:4010/seller/inventory/product/mtg_single/7c84393d-c26d-8e18-c48b-3b0569015e36
+[1:51:47 PM] › [CLI] ℹ  info      POST       http://127.0.0.1:4010/seller/inventory/scryfall_id
+[1:51:47 PM] › [CLI] ℹ  info      GET        http://127.0.0.1:4010/seller/inventory/scryfall_id/quod?language_id=DE&finish_id=NF&condition_id=NM
+[1:51:47 PM] › [CLI] ℹ  info      DELETE     http://127.0.0.1:4010/seller/inventory/scryfall_id/omnis?language_id=CT&finish_id=EF&condition_id=MP
+[1:51:47 PM] › [CLI] ℹ  info      PUT        http://127.0.0.1:4010/seller/inventory/scryfall_id/non?language_id=HE&finish_id=NF&condition_id=HP
+[1:51:47 PM] › [CLI] ℹ  info      POST       http://127.0.0.1:4010/seller/inventory/tcgplayer_id
+[1:51:47 PM] › [CLI] ℹ  info      GET        http://127.0.0.1:4010/seller/inventory/tcgplayer_id/et?language_id=PH&condition_id=HP
+[1:51:47 PM] › [CLI] ℹ  info      DELETE     http://127.0.0.1:4010/seller/inventory/tcgplayer_id/est?language_id=IT&finish_id=FO&condition_id=HP
+[1:51:47 PM] › [CLI] ℹ  info      PUT        http://127.0.0.1:4010/seller/inventory/tcgplayer_id/cumque?language_id=AR&finish_id=NF&condition_id=LP
+[1:51:47 PM] › [CLI] ℹ  info      GET        http://127.0.0.1:4010/seller/orders?since=1931-09-12T23%3A23%3A14.0Z&is_unfulfilled=false&is_fulfilled=false&has_fulfillments=true&label=voluptatem&limit=296&offset=580
+[1:51:47 PM] › [CLI] ℹ  info      GET        http://127.0.0.1:4010/seller/orders/ee632d15-f3f8-8658-a124-244929f6428c
+[1:51:47 PM] › [CLI] ℹ  info      PUT        http://127.0.0.1:4010/seller/orders/9b3ba28f-99d6-a29b-8231-46cee7cbd2ed/fulfillment
+[1:51:47 PM] › [CLI] ℹ  info      GET        http://127.0.0.1:4010/seller/orders/d00cf6d6-d555-8be3-4b99-25324447a4aa/reports
+[1:51:47 PM] › [CLI] ℹ  info      GET        http://127.0.0.1:4010/webhooks?topic=order_created
+[1:51:47 PM] › [CLI] ℹ  info      GET        http://127.0.0.1:4010/webhooks/1e6a9759-2f4c-21d6-5c9c-1e37dc265bb4
+[1:51:47 PM] › [CLI] ℹ  info      DELETE     http://127.0.0.1:4010/webhooks/1db77889-f84e-57e5-f63a-1381fd553102
+[1:51:47 PM] › [CLI] ℹ  info      PUT        http://127.0.0.1:4010/webhooks/register
+[1:51:47 PM] › [CLI] ℹ  info      GET        http://127.0.0.1:4010/orders?since=1898-11-16T09%3A24%3A42.0Z&is_unfulfilled=false&is_fulfilled=false&has_fulfillments=false&label=et&limit=396&offset=153
+[1:51:47 PM] › [CLI] ℹ  info      GET        http://127.0.0.1:4010/orders/5b6f1c3d-2f4d-2c97-b429-d23e5648461e
+[1:51:47 PM] › [CLI] ℹ  info      PUT        http://127.0.0.1:4010/orders/b342b3ed-f5dd-9db3-d512-c44c264df486/fulfillment
+[1:51:47 PM] › [CLI] ▶  start     Prism is listening on http://127.0.0.1:4010
+[1:51:57 PM] › [HTTP SERVER] get /prices/singles ℹ  info      Request received
+[1:51:57 PM] ›     [NEGOTIATOR] ℹ  info      Request contains an accept header: */*
+[1:51:57 PM] ›     [VALIDATOR] ✔  success   The request passed the validation rules. Looking for the best response
+[1:51:57 PM] ›     [NEGOTIATOR] ✔  success   Found a compatible content for */*
+[1:51:57 PM] ›     [NEGOTIATOR] ✔  success   Responding with the requested status code 200
+[1:51:57 PM] ›     [NEGOTIATOR] ℹ  info      > Responding with "200"
+[1:52:00 PM] › [HTTP SERVER] get /prices/singles ℹ  info      Request received
+[1:52:00 PM] ›     [NEGOTIATOR] ℹ  info      Request contains an accept header: */*
+[1:52:00 PM] ›     [VALIDATOR] ✔  success   The request passed the validation rules. Looking for the best response
+[1:52:00 PM] ›     [NEGOTIATOR] ✔  success   Found a compatible content for */*
+[1:52:00 PM] ›     [NEGOTIATOR] ✔  success   Responding with the requested status code 200
+[1:52:00 PM] ›     [NEGOTIATOR] ℹ  info      > Responding with "200"
